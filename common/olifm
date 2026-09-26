@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Define the stream search pattern/URL keyword
+STREAM_KEY="OLI968FMAAC"
+
+case "$1" in
+    start)
+        # Check if it's already running
+        if pgrep -f "$STREAM_KEY" > /dev/null; then
+            echo "olifm stream is already running."
+        else
+            echo "Starting olifm stream..."
+            nohup mpv --no-video "https://playerservices.streamtheworld.com/api/livestream-redirect/$STREAM_KEY.aac" > /dev/null 2>&1 &
+            echo "Stream started in the background."
+        fi
+        ;;
+    stop)
+        if pgrep -f "$STREAM_KEY" > /dev/null; then
+            echo "Stopping olifm stream..."
+            pkill -f "$STREAM_KEY"
+            echo "Stream stopped."
+        else
+            echo "olifm stream is not running."
+        fi
+        ;;
+    status)
+        if pgrep -f "$STREAM_KEY" > /dev/null; then
+            echo "olifm stream is running."
+        else
+            echo "olifm stream is stopped."
+        fi
+        ;;
+    *)
+        echo "Usage: olifm {start|stop|status}"
+        exit 1
+        ;;
+esac
