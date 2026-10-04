@@ -1,0 +1,13 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    user: "1000:1000"
+    network_mode: 'host'
+    volumes:
+      - /opt/docagent/docker/jellyfin/config:/config
+      - /opt/docagent/docker/jellyfin/cache:/cache
+#      - /mnt/seagt01:/seagt01
+#      - /mnt/seagt02:/seagt02
+      - /mnt/hp01:/hp01
+    restart: unless-stopped
