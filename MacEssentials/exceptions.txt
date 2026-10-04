@@ -1,0 +1,7 @@
+------------------------------------
+Processing with safe metadata read...
+Report for missing files: missing_metadata_report.txt
+------------------------------------
+Scanning for problematic files...
+Process Complete.
+Check 'missing_metadata_report.txt' for files that had no internal metadata.
