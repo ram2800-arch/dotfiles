@@ -1,0 +1,10 @@
+#radio mrichi
+mpv --http-header-fields="User-Agent: Mozilla/5.0,Referer: https://www.tamilradios.com/" "http://radios.crabdance.com:8002/1"
+#sun 93.5
+mpv --http-header-fields="User-Agent: Mozilla/5.0,Referer: https://www.tamilradios.com/" "http://radios.crabdance.com:8002/2"
+#hello fm
+mpv --http-header-fields="User-Agent: Mozilla/5.0,Referer: https://www.tamilradios.com/" "http://radios.crabdance.com:8002/3"
+#big fm
+mpv --http-header-fields="User-Agent: Mozilla/5.0,Referer: https://www.tamilradios.com/" "http://radios.crabdance.com:8002/4"
+
+
