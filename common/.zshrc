@@ -148,5 +148,5 @@ LOCAL_CONF="$HOME/dotfiles/ubuntu/$(hostname)/.zshrc.local"
 if [[ -f "$LOCAL_CONF" ]]; then
     source "$LOCAL_CONF"
 fi
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/dotfiles/scripts:$PATH"
 alias cw1="ssh ram2800@wmcubu1.local"
