@@ -124,8 +124,8 @@ alias runb="echo 'Starting Upgrades...'; brew update; brew upgrade -y; brew clea
 export HOMEBREW_CASK_OPTS="--no-quarantine"
 export HOMEBREW_NO_ENV_HINTS=1
 export HOMEBREW_NO_ASK=1
-cd ~/Downloads
-export PATH="/opt/homebrew/opt/sqlite/bin:~/.local/bin:~/dotfiles/scripts:$PATH"
+#cd ~/Downloads
+export PATH="/opt/homebrew/opt/sqlite/bin:/opt/homebrew/bin:$PATH"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/ram2800/.docker/completions $fpath)
 export DOCKER_HOST=unix://$HOME/.lima/household-exit-node/sock/docker.sock
@@ -136,4 +136,4 @@ alias glogs="limactl shell household-exit-node docker logs household-exit-node-g
 alias docker="limactl shell household-exit-node docker"
 
 # Created by `pipx` on 2026-09-13 22:24:34
-export PATH="$PATH:/Users/ram2800/.local/bin:/Users/ram2800/bin/"
+export PATH="$PATH:/Users/ram2800/.local/bin:/Users/ram2800/bin:/Users/ram2800/dotfiles/scripts"
