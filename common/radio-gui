@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Check if any radio stream is currently playing
+if pgrep -f "radios.crabdance.com" > /dev/null || pgrep -f "OLI968FMAAC" > /dev/null; then
+    # If it IS playing, act as a STOP button
+    /home/ram2800/.local/bin/radios stop
+    
+    # Optional: Pop up a quick notification so you know it worked
+    zenity --notification --text="Radio stopped."
+else
+    # If it is NOT playing, ask for the parameter
+    CHOICE=$(zenity --list \
+      --title="Radio Menu" \
+      --text="Select a station to play:" \
+      --column="ID" --column="Station" \
+      --hide-column=1 \
+      1 "Radio Mirchi" \
+      2 "Sun FM" \
+      3 "Hello FM" \
+      4 "Big FM" \
+      5 "Oli FM")
+
+    # Start the radio with the chosen parameter
+    if [ -n "$CHOICE" ]; then
+        /home/ram2800/.local/bin/radios "$CHOICE"
+        zenity --notification --text="Radio started."
+    fi
+fi
