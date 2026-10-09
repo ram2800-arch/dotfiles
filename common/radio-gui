@@ -18,7 +18,7 @@ else
       2 "Sun FM" \
       3 "Hello FM" \
       4 "Big FM" \
-      5 "Oli FM")
+      5 "Oli FM" )
 
     # Start the radio with the chosen parameter
     if [ -n "$CHOICE" ]; then
