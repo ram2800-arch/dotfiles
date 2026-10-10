@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 STATION="$1"
 ACTION="${2:-start}" # Defaults to 'start' if no second parameter is provided
 

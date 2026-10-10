@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 
 # Check if any radio stream is currently playing
 if pgrep -f "radios.crabdance.com" > /dev/null || pgrep -f "OLI968FMAAC" > /dev/null; then
@@ -22,7 +23,7 @@ else
 
     # Start the radio with the chosen parameter
     if [ -n "$CHOICE" ]; then
-        /home/ram2800/.local/bin/radios "$CHOICE"
+        /home/ram2800/.local/bin/radios "$CHOICE" start
         zenity --notification --text="Radio started."
     fi
 fi
