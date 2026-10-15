@@ -130,7 +130,7 @@ alias docrr='docker compose -f $DOCKER_HOME/docker-compose.vpn.yaml down && dock
 alias glogsf='docker compose -f $DOCKER_HOME/docker-compose.vpn.yaml logs --tail 20 gluetun'
 alias chkj="curl -I http://127.0.0.1:8096/"
 alias dstat="docker exec -it household-exit-node-tailscale tailscale status"
-alias sysup="sudo apt update && sudo apt upgrade -y && fwupdmgr update"
+alias sysup="sudo apt update && sudo apt upgrade -y" 
 alias chkip="docker exec -it household-exit-node-gluetun wget -qO- https://ipinfo.io"
 alias jlogsf="docker compose -f $DOCKER_HOME/docker-compose.jellyfin.yaml logs -f --tail 50"
 
