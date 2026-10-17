@@ -1,0 +1,27 @@
+#!/bin/bash
+choice=$(zenity --list --title="Docker Menu" \
+    --column="Action" \
+    "Start VPN (Exit Node)" \
+    "Stop VPN (Exit Node)" \
+    "Start Jellyfin" \
+    "Stop Jellyfin" \
+    "Check All Statuses")
+
+case "$choice" in
+    "Start VPN (Exit Node)")
+        zsh -ic "docker.sh -s vpn -a start"
+        ;;
+    "Stop VPN (Exit Node)")
+        zsh -ic "docker.sh -s vpn -a stop"
+        ;;
+    "Start Jellyfin")
+        zsh -ic "docker.sh -s jfin -a start"
+        ;;
+    "Stop Jellyfin")
+        zsh -ic "docker.sh -s jfin -a stop"
+        ;;
+    "Check All Statuses")
+        x-terminal-emulator -e zsh -ic "docker.sh -s all -a status; echo 'Press Enter to close...'; read"
+        ;;
+esac
+EOF
