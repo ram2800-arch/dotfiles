@@ -120,7 +120,7 @@ export DOCKER_BIN="/opt/docagent/bin"
 alias viz="vi ~/.zshrc"
 alias runz=". ~/.zshrc"
 alias yt="~/yt.sh"
-alias getmusic="~/bin/getmusic.sh"
+#alias getmusic="~/bin/getmusic.sh"
 alias getsize="du -sh $HOME/* 2>/dev/null | sort -h"
 
 alias runb="echo 'Starting Upgrades...'; brew update; brew upgrade -y; brew cleanup;"
