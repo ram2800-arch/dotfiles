@@ -103,13 +103,14 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 eval "$(/opt/homebrew/bin/brew shellenv)"
-export PROMPT='%F{yellow}%n:%F{white}[%D %T] %F{cyan}%~$ '
+#export PROMPT='%F{yellow}%n:%F{white}[%D %T] %F{cyan}%~$ '
+PROMPT='%K{yellow}%F{black} %D{%y-%m-%d %H:%M} %K{blue}%F{yellow}%F{white} %n@%m %K{cyan}%F{blue}%F{black} %~ %k%F{cyan}%f $ '
 
 # --- Personal Aliases ---
 alias viz="vi ~/.zshrc"
 alias runz=". ~/.zshrc"
 alias yt="~/yt.sh"
-alias getmusic="~/bin/getmusic.sh"
+#alias getmusic="~/bin/getmusic.sh"
 alias getsize="du -sh /Users/ram2800/* 2>/dev/null | sort -h"
 alias chkenode="launchctl print gui/$(id -u) | grep exit"
 #alias glogs="docker logs household-exit-node-gluetun"
