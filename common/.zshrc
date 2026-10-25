@@ -150,3 +150,13 @@ if [[ -f "$LOCAL_CONF" ]]; then
 fi
 export PATH="$HOME/.local/bin:$HOME/dotfiles/scripts:$PATH"
 alias cw1="ssh ram2800@wmcubu1.local"
+
+# Run 'runb' once per day on first terminal open
+TODAY=$(date +%F)
+TRACKING_FILE="$HOME/.runb_last_run"
+
+if [[ ! -f "$TRACKING_FILE" || "$(cat "$TRACKING_FILE")" != "$TODAY" ]]; then
+    echo "First terminal session of the day detected. Executing runb..."
+    runb
+    echo "$TODAY" > "$TRACKING_FILE"
+fi
