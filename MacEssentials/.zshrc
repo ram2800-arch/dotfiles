@@ -133,8 +133,17 @@ export DOCKER_HOST=unix://$HOME/.lima/household-exit-node/sock/docker.sock
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
-alias glogs="limactl shell household-exit-node docker logs household-exit-node-gluetun"
-alias docker="limactl shell household-exit-node docker"
+#alias glogs="limactl shell household-exit-node docker logs household-exit-node-gluetun"
+#alias docker="limactl shell household-exit-node docker"
 
 # Created by `pipx` on 2026-09-13 22:24:34
 export PATH="$PATH:/Users/ram2800/.local/bin:/Users/ram2800/bin:/Users/ram2800/dotfiles/scripts"
+# Run 'runb' once per day on first terminal open
+TODAY=$(date +%F)
+TRACKING_FILE="$HOME/.runb_last_run"
+
+if [[ ! -f "$TRACKING_FILE" || "$(cat "$TRACKING_FILE")" != "$TODAY" ]]; then
+    echo "First terminal session of the day detected. Executing runb..."
+    runb
+    echo "$TODAY" > "$TRACKING_FILE"
+fi
