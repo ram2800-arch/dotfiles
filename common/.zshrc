@@ -123,9 +123,13 @@ alias yt="~/yt.sh"
 #alias getmusic="~/bin/getmusic.sh"
 alias getsize="du -sh $HOME/* 2>/dev/null | sort -h"
 
-#alias runb="echo 'Starting Upgrades...'; brew update; brew upgrade -y; brew cleanup;"
 #echo "$USER ALL=(ALL) NOPASSWD: /usr/bin/apt" | sudo tee /etc/sudoers.d/apt-nopasswd
-alias runb="echo 'Starting Brew Upgrades...'; brew update; brew upgrade; brew cleanup; echo 'Starting System Upgrades...'; sudo apt update && sudo apt upgrade -y;"
+#alias runb="echo 'Starting Brew Upgrades...'; brew update; brew upgrade; brew cleanup; echo 'Starting System Upgrades...'; sudo apt update && sudo apt upgrade -y;"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  alias runb="echo 'Starting Brew Upgrades...'; brew update; brew upgrade; brew cleanup; echo 'Starting macOS System Upgrades...'; softwareupdate -ia --include-config-data"
+else
+  alias runb="echo 'Starting Brew Upgrades...'; brew update; brew upgrade; brew cleanup; echo 'Starting System Upgrades...'; sudo apt update && sudo apt upgrade -y;"
+fi
 alias vih="vi $DOCKER_HOME/docker-compose-vpn.yaml"
 alias vie="vi $DOCKER_HOME/.env"
 alias docrr='docker compose -f $DOCKER_HOME/docker-compose.vpn.yaml down && docker compose -f $DOCKER_HOME/docker-compose.vpn.yaml up -d --force-recreate'
