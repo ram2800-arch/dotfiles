@@ -1,0 +1,15 @@
+dotsync
+x-terminal-emulator -e bash -c "/home/ram2800/.local/bin/dotsync; echo 'Press Enter to close...'; read"
+speedtest
+x-terminal-emulator -e bash -c "/home/ram2800/.local/bin/myspeedtest; echo 'Press Enter to close...'; read"
+Start Exit node
+x-terminal-emulator -e zsh -ic "docker.sh -s vpn -a start; echo 'Press Enter to close...'; read"
+Start Jellyfin
+x-terminal-emulator -e zsh -ic "docker.sh -s jfin -a start; echo 'Press Enter to close...'; read"
+Docker status
+x-terminal-emulator -e zsh -ic "docker.sh -s all -a status; echo 'Press Enter to close...'; read"
+radios
+bash -c /home/ram2800/.local/bin/radio-gui
+music-app-symbolic
+docker-menu
+/home/ram2800/.local/bin/docker-menu
