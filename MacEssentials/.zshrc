@@ -119,8 +119,12 @@ alias startnode="limactl start household-exit-node && ~/household-exit-node/exit
 alias sysup="sudo apt update && sudo apt upgrade -y && fwupdmgr update"
 #alias runb="brew update; brew upgrade -y; if command -v mas &>/dev/null; then mas upgrade; fi"
 
-alias runb="echo 'Starting Upgrades...'; brew update; brew upgrade -y; brew cleanup; if command -v mas &>/dev/null; then mas upgrade; fi; echo '\nInstalling macOS System Updates...'; softwareupdate -l"
-
+#alias runb="echo 'Starting Upgrades...'; brew update; brew upgrade -y; brew cleanup; if command -v mas &>/dev/null; then mas upgrade; fi; echo '\nInstalling macOS System Updates...'; softwareupdate -l"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  alias runb="echo 'Starting Brew Upgrades...'; brew update; brew upgrade; brew cleanup; echo 'Starting macOS System Upgrades...'; softwareupdate -ia --include-config-data"
+else
+  alias runb="echo 'Starting Brew Upgrades...'; brew update; brew upgrade; brew cleanup; echo 'Starting System Upgrades...'; sudo apt update && sudo apt upgrade -y;"
+fi
 # Disable Gatekeeper quarantine for Homebrew Casks
 export HOMEBREW_CASK_OPTS="--no-quarantine"
 export HOMEBREW_NO_ENV_HINTS=1

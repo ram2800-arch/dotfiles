@@ -1,12 +1,16 @@
+#!/usr/bin/env python3
 import os
 import hashlib
 import shutil
 
 # Exact paths based on your Mac Finder
-master_folder = '/Volumes/Ram4TB/Ram1TB'
-target_folder = '/Volumes/Ram4TB/Allon1Tb'
-duplicates_folder = '/Volumes/Ram4TB/Duplicates_Found'
-
+#master_folder = '/Volumes/Ram4TB/Ram1TB'
+#target_folder = '/Volumes/Ram4TB/Allon1Tb'
+#duplicates_folder = '/Volumes/Ram4TB/Duplicates_Found'
+import sys
+master_folder = sys.argv[1]
+target_folder = sys.argv[2]
+duplicates_folder = sys.argv[3]
 def get_file_hash(filepath):
     """Generates a digital fingerprint for the file content."""
     h = hashlib.md5()
