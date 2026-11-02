@@ -1,0 +1,4 @@
+speedtest 
+ping -c 4 1.1.1.1
+speedtest -L
+speedtest -s 12345
