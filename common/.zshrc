@@ -125,10 +125,11 @@ alias getsize="du -sh $HOME/* 2>/dev/null | sort -h"
 
 #echo "$USER ALL=(ALL) NOPASSWD: /usr/bin/apt" | sudo tee /etc/sudoers.d/apt-nopasswd
 #alias runb="echo 'Starting Brew Upgrades...'; brew update; brew upgrade; brew cleanup; echo 'Starting System Upgrades...'; sudo apt update && sudo apt upgrade -y;"
+# System & Brew update alias
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  alias runb="echo 'Starting Brew Upgrades...'; brew update; brew upgrade; brew cleanup; echo 'Starting macOS System Upgrades...'; softwareupdate -ia --include-config-data"
+    alias runb="echo 'Starting Homebrew...'; brew update && brew upgrade && brew cleanup; echo 'Starting macOS Updates...'; softwareupdate -ia --include-config-data"
 else
-  alias runb="echo 'Starting Brew Upgrades...'; brew update; brew upgrade; brew cleanup; echo 'Starting System Upgrades...'; sudo apt update && sudo apt upgrade -y;"
+    alias runb="echo 'Starting Homebrew...'; brew update && brew upgrade && brew cleanup; echo 'Starting APT Updates...'; sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y; echo 'Starting Snap Updates...'; sudo snap refresh"
 fi
 alias vih="vi $DOCKER_HOME/docker-compose-vpn.yaml"
 alias vie="vi $DOCKER_HOME/.env"
