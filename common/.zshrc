@@ -140,14 +140,15 @@ alias dstat="docker exec -it household-exit-node-tailscale tailscale status"
 alias sysup="sudo apt update && sudo apt upgrade -y" 
 alias chkip="docker exec -it household-exit-node-gluetun wget -qO- https://ipinfo.io"
 alias jlogsf="docker compose -f $DOCKER_HOME/docker-compose.jellyfin.yaml logs -f --tail 50"
+alias cw2="ssh ram2800@wmcubu2.local"
 
 # Disable Gatekeeper quarantine for Homebrew Casks
 export HOMEBREW_CASK_OPTS="--no-quarantine"
 export HOMEBREW_NO_ENV_HINTS=1
 export HOMEBREW_NO_ASK=1
-export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
+#export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
 #export PATH="/opt/docagent/docker:/opt/docagent/docker/household-exit-node:$PATH"
-export PATH="$DOCKER_HOME:$DOCKER_BIN:$PATH"
+#export PATH="$DOCKER_HOME:$DOCKER_BIN:$PATH"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Load machine-specific settings dynamically
@@ -155,8 +156,7 @@ LOCAL_CONF="$HOME/dotfiles/ubuntu/$(hostname)/.zshrc.local"
 if [[ -f "$LOCAL_CONF" ]]; then
     source "$LOCAL_CONF"
 fi
-export PATH="$HOME/.local/bin:$HOME/dotfiles/scripts:$PATH"
-alias cw2="ssh ram2800@wmcubu2.local"
+export PATH="$HOME/.local/bin:$HOME/dotfiles/scripts:$HOME/dotfiles/common:/opt/homebrew/opt/sqlite/bin:$DOCKER_HOME:$DOCKER_BIN:$PATH"
 
 # Run 'runb' once per day on first terminal open
 TODAY=$(date +%F)
