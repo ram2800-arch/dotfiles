@@ -156,7 +156,7 @@ if [[ -f "$LOCAL_CONF" ]]; then
     source "$LOCAL_CONF"
 fi
 export PATH="$HOME/.local/bin:$HOME/dotfiles/scripts:$PATH"
-alias cw1="ssh ram2800@wmcubu1.local"
+alias cw2="ssh ram2800@wmcubu2.local"
 
 # Run 'runb' once per day on first terminal open
 TODAY=$(date +%F)
