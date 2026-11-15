@@ -2,3 +2,5 @@ speedtest
 ping -c 4 1.1.1.1
 speedtest -L
 speedtest -s 12345
+cd /Volumes/SandSSD01/Ram1TB/Scanned
+for d in */; do printf "%-20s %s files\n" "${d%/}" "$(find "$d" -type f | wc -l)"; done
