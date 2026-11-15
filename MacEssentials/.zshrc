@@ -141,7 +141,7 @@ compinit
 #alias docker="limactl shell household-exit-node docker"
 
 # Created by `pipx` on 2026-09-13 22:24:34
-export PATH="$PATH:/Users/ram2800/.local/bin:/Users/ram2800/bin:/Users/ram2800/dotfiles/scripts"
+export PATH="$PATH:/Users/ram2800/.local/bin:/Users/ram2800/bin:/Users/ram2800/dotfiles/scripts:/Users/ram2800/dotfiles/common"
 # Run 'runb' once per day on first terminal open
 TODAY=$(date +%F)
 TRACKING_FILE="$HOME/.runb_last_run"

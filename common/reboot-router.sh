@@ -1,22 +1,54 @@
 #!/bin/bash
 ROUTER_IP="192.168.1.1"
 ACCESS_CODE="664*=9<%#@"
+COOKIE_FILE="/tmp/router_cookies.txt"
 
 echo "Initiating AT&T BGW320 reboot sequence..."
 
-# Step 1: Request the restart page to grab the dynamic security token (nonce)
-HTML_RESPONSE=$(curl -s "http://$ROUTER_IP/cgi-bin/restart.ha")
-NONCE=$(echo "$HTML_RESPONSE" | grep -oP 'name="nonce" value="\K[^"]+')
+# Ensure clean slate
+rm -f "$COOKIE_FILE"
 
-if [ -z "$NONCE" ]; then
-    echo "Error: Could not retrieve the security token. Ensure the IP is correct."
+# --- STAGE 1: PRIME THE COOKIE JAR ---
+# The BGW320 always rejects the first request. This dummy request grabs the session cookie.
+curl -s -c "$COOKIE_FILE" "http://$ROUTER_IP/cgi-bin/restart.ha" > /dev/null
+
+# --- STAGE 2: GET LOGIN TOKEN ---
+# Request the page again WITH the cookie to finally get the login form
+LOGIN_HTML=$(curl -s -c "$COOKIE_FILE" -b "$COOKIE_FILE" "http://$ROUTER_IP/cgi-bin/restart.ha")
+LOGIN_NONCE=$(echo "$LOGIN_HTML" | grep 'name="nonce"' | head -n 1 | sed 's/.*value="\([^"]*\)".*/\1/')
+
+if [ -z "$LOGIN_NONCE" ]; then
+    echo "Error: Could not retrieve the login token."
+    rm -f "$COOKIE_FILE"
     exit 1
 fi
-echo $NONCE
-# Step 2: Post the restart command using the captured token and your access code
-#curl -s -X POST "http://$ROUTER_IP/cgi-bin/restart.ha" \
-     -d "nonce=$NONCE" \
-     -d "password=$ACCESS_CODE" \
-     -d "Restart=Restart"
 
-#echo "Reboot command sent to $ROUTER_IP successfully."
+# --- STAGE 3: AUTHENTICATE ---
+# Submit the Access Code to authenticate the session
+curl -s -c "$COOKIE_FILE" -b "$COOKIE_FILE" -X POST "http://$ROUTER_IP/cgi-bin/restart.ha" \
+     -d "nonce=$LOGIN_NONCE" \
+     -d "password=$ACCESS_CODE" > /dev/null
+     
+# --- STAGE 4: GET REBOOT TOKEN ---
+# Request the restart page again as an authenticated user to get the final reboot token
+RESTART_HTML=$(curl -s -b "$COOKIE_FILE" "http://$ROUTER_IP/cgi-bin/restart.ha")
+REBOOT_NONCE=$(echo "$RESTART_HTML" | grep 'name="nonce"' | head -n 1 | sed 's/.*value="\([^"]*\)".*/\1/')
+
+if [ -z "$REBOOT_NONCE" ]; then
+    echo "Error: Could not retrieve the reboot token. Authentication failed."
+    rm -f "$COOKIE_FILE"
+    exit 1
+fi
+
+echo "Tokens acquired successfully. Sending reboot command..."
+
+# --- STAGE 5: REBOOT ---
+# Execute the reboot (Remove the # on the next 3 lines to make it live)
+curl -s -b "$COOKIE_FILE" -X POST "http://$ROUTER_IP/cgi-bin/restart.ha" \
+     -d "nonce=$REBOOT_NONCE" \
+     -d "Restart=Restart" > /dev/null
+     
+echo "Reboot command sent to $ROUTER_IP successfully."
+
+# Clean up
+rm -f "$COOKIE_FILE"
