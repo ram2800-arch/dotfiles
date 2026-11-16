@@ -9,11 +9,9 @@ echo "Initiating AT&T BGW320 reboot sequence..."
 rm -f "$COOKIE_FILE"
 
 # --- STAGE 1: PRIME THE COOKIE JAR ---
-# The BGW320 always rejects the first request. This dummy request grabs the session cookie.
 curl -s -c "$COOKIE_FILE" "http://$ROUTER_IP/cgi-bin/restart.ha" > /dev/null
 
 # --- STAGE 2: GET LOGIN TOKEN ---
-# Request the page again WITH the cookie to finally get the login form
 LOGIN_HTML=$(curl -s -c "$COOKIE_FILE" -b "$COOKIE_FILE" "http://$ROUTER_IP/cgi-bin/restart.ha")
 LOGIN_NONCE=$(echo "$LOGIN_HTML" | grep 'name="nonce"' | head -n 1 | sed 's/.*value="\([^"]*\)".*/\1/')
 
@@ -23,14 +21,22 @@ if [ -z "$LOGIN_NONCE" ]; then
     exit 1
 fi
 
-# --- STAGE 3: AUTHENTICATE ---
-# Submit the Access Code to authenticate the session
-curl -s -c "$COOKIE_FILE" -b "$COOKIE_FILE" -X POST "http://$ROUTER_IP/cgi-bin/restart.ha" \
+# --- STAGE 3: AUTHENTICATE (Simulate JavaScript Hashing) ---
+# Cross-platform MD5 hash generation to bypass the errlogin rejection
+if command -v md5sum >/dev/null 2>&1; then
+    HASH=$(printf "%s" "${ACCESS_CODE}${LOGIN_NONCE}" | md5sum | awk '{print $1}')
+else
+    HASH=$(printf "%s" "${ACCESS_CODE}${LOGIN_NONCE}" | md5 -q)
+fi
+
+# Send the exact payload the router's backend expects
+curl -s -c "$COOKIE_FILE" -b "$COOKIE_FILE" -X POST "http://$ROUTER_IP/cgi-bin/login.ha" \
      -d "nonce=$LOGIN_NONCE" \
-     -d "password=$ACCESS_CODE" > /dev/null
+     -d "password=" \
+     -d "hashpassword=$HASH" \
+     -d "Continue=Continue" > /dev/null
      
 # --- STAGE 4: GET REBOOT TOKEN ---
-# Request the restart page again as an authenticated user to get the final reboot token
 RESTART_HTML=$(curl -s -b "$COOKIE_FILE" "http://$ROUTER_IP/cgi-bin/restart.ha")
 REBOOT_NONCE=$(echo "$RESTART_HTML" | grep 'name="nonce"' | head -n 1 | sed 's/.*value="\([^"]*\)".*/\1/')
 
@@ -43,10 +49,16 @@ fi
 echo "Tokens acquired successfully. Sending reboot command..."
 
 # --- STAGE 5: REBOOT ---
-# Execute the reboot (Remove the # on the next 3 lines to make it live)
+# Send the reboot command with strict browser headers
 curl -s -b "$COOKIE_FILE" -X POST "http://$ROUTER_IP/cgi-bin/restart.ha" \
+     -H "Origin: http://$ROUTER_IP" \
+     -H "Referer: http://$ROUTER_IP/cgi-bin/restart.ha" \
      -d "nonce=$REBOOT_NONCE" \
      -d "Restart=Restart" > /dev/null
+     
+# --- STAGE 6: FINALIZE SEQUENCE ---
+# Follow the meta-refresh redirect to trigger the final power cycle
+curl -s -b "$COOKIE_FILE" "http://$ROUTER_IP/cgi-bin/restarting.ha" > /dev/null
      
 echo "Reboot command sent to $ROUTER_IP successfully."
 
